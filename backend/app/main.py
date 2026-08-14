@@ -1,10 +1,15 @@
 from fastapi import FastAPI
 from app.core.config import settings
+from app.routes import user,auth
 
 app=FastAPI(title=settings.app_name,
             debug=settings.debug,
             description="easily found your losts",
             version="1.0.0")
+
+app.include_router(auth.router)
+app.include_router(user.router)
+
 
 
 @app.get("/health",tags=["Health"])
