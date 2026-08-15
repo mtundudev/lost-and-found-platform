@@ -1,6 +1,6 @@
 from pydantic import BaseModel,Field,ConfigDict
 from datetime import date,datetime
-from typing import Optional
+from typing import Optional,List
 from app.models.item import Item_type
 
 class ItemCreate(BaseModel):
@@ -41,3 +41,13 @@ class ItemResponse(BaseModel):
     
     model_config=ConfigDict(from_attributes=True)
     
+class PaginationResponse(BaseModel):
+    page:int
+    limit:int
+    total:int
+    total_pages:int
+    has_next:bool
+    has_previous:bool
+    items:List[ItemResponse]
+    
+    model_config=ConfigDict(from_attributes=True)

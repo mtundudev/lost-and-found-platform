@@ -5,12 +5,12 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 
 class Item_type(str,enum.Enum):
-    lost="LOST",
-    found="FOUND"
+    lost="lost"
+    found="found"
 
 
 class StatusCheck(str,enum.Enum):
-    active="ACTIVE",
+    active="ACTIVE"
     recovered="RECOVERED"
     returned="RETURNED"
   
