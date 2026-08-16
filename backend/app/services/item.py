@@ -12,7 +12,6 @@ def create_item(data:ItemCreate,db:Session,current_user):
         description=data.description,
         location=data.location,
         item_type=data.item_type,
-        image=data.image,
         date_occurred=data.date_occurred,
         created_by=current_user.id
     )
@@ -97,8 +96,6 @@ def update_item(item_id:int,data:ItemUpdate,current_user,db:Session):
         item.description=data.description
     if data.item_type:    
         item.item_type=data.item_type
-    if data.image:    
-        item.image=data.image
     if data.location:    
         item.location=data.location
     if data.category:    
