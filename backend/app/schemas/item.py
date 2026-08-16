@@ -10,7 +10,6 @@ class ItemCreate(BaseModel):
     category:str
     location:str
     date_occurred:date
-    image:Optional[str]=None
     date_occurred:date
 
     model_config=ConfigDict(from_attributes=True)
@@ -22,7 +21,7 @@ class ItemUpdate(BaseModel):
     category:Optional[str]=None
     location:Optional[str]=None
     date_occurred:Optional[date]=None
-    image:Optional[str]=None
+   
     
     model_config=ConfigDict(from_attributes=True)
     
@@ -34,7 +33,7 @@ class ItemResponse(BaseModel):
     category:str
     location:str
     date_occurred:Optional[date]=None
-    image:Optional[str]=None 
+    image_id:Optional[int]=None
     created_at:datetime
     updated_at:datetime  
     created_by:int   

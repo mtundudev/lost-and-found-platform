@@ -27,10 +27,10 @@ class Items(Base):
     location=Column(String)
     date_occurred=Column(DATE)
     status=Column(Enum(StatusCheck),default=StatusCheck.active)
-    image=Column(String)
+    image_id=Column(Integer,ForeignKey("images.id",ondelete="CASCADE"),nullable=True)
     created_by=Column(Integer,ForeignKey("users.id",ondelete="CASCADE"))
     created_at=Column(DateTime,default=datetime.now())
     updated_at=Column(DateTime,default=datetime.now(),onupdate=datetime.now())
     
-    
+    image=relationship("Image",back_populates="item")
     user=relationship("User",back_populates="items")
