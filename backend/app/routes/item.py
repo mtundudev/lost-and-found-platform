@@ -34,6 +34,13 @@ def update(item_id:int,data:ItemUpdate,db:Session=Depends(get_db),
            current_user:User=Depends(get_current_user)):
     return item.update_item(item_id,data,current_user,db)
 
+
+@router.patch("/{item_id}status")
+def status_update(item_id:int,item_status:str,
+                  db:Session=Depends(get_db),
+                  current_user:User=Depends(get_current_user)):
+    return item.item_status(item_id,item_status,db,current_user)
+
 @router.delete("/{item_id}")
 def delete(item_id:int,db:Session=Depends(get_db),
             current_user:User=Depends(get_current_user)):

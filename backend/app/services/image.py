@@ -10,7 +10,7 @@ async def upload_image(item_id:int,current_user,db:Session,file:UploadFile=File(
     if not item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="item not found")
     if (item.created_by != current_user.id):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=" item not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=" only the owner can access")
    
     
     ALLOWED_MIME_TYPE={
@@ -73,9 +73,9 @@ async def upload_image(item_id:int,current_user,db:Session,file:UploadFile=File(
     
     return image
 
-def item_image(current_user,db:Session):
+def item_image(item_id:int,db:Session):
     
-    item=db.query(Items).filter(Items.created_by==current_user.id).first()
+    item=db.query(Items).filter(Items.id==item_id).first()
     if not item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="item not found")
     
@@ -85,13 +85,14 @@ def item_image(current_user,db:Session):
     return image
 
 
-def delete_image(current_user,db:Session):
-    item=db.query(Items).filter(Items.created_by==current_user.id).first()
+def delete_image(item_id:int,current_user,db:Session):
+    item=db.query(Items).filter(Items.id==item_id).first()
     if not item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="item not found")
     if(item.created_by != current_user.id):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="you not have action to perform this action")
     image=db.query(Image).filter(Image.id==item.image_id).first()
+    
     if not image:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="item has no image")
     

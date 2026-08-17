@@ -32,6 +32,7 @@ class ItemResponse(BaseModel):
     item_type:str
     category:str
     location:str
+    status:str
     date_occurred:Optional[date]=None
     image_id:Optional[int]=None
     created_at:datetime
