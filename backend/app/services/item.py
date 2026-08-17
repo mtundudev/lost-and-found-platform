@@ -1,6 +1,6 @@
 from app.schemas.item import ItemCreate,ItemUpdate
 from sqlalchemy.orm import Session
-from app.models.item import Items,Item_type
+from app.models.item import Items,Item_type,StatusCheck
 from fastapi import HTTPException,status,Query
 from sqlalchemy import or_,asc,desc
 import math
@@ -106,7 +106,29 @@ def update_item(item_id:int,data:ItemUpdate,current_user,db:Session):
     db.commit()
     db.refresh(item)
     return item
+ALLOWED_ITEM_STATUS=["recovery","returned"]
 
+def item_status(item_id:int,item_status:str,db:Session,current_user):
+    item=db.query(Items).filter(Items.id== item_id).first()
+    if  not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="item not found")
+    
+    if(item.created_by != current_user.id):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="you cannot perform this action")
+    if (item.status != StatusCheck.active ):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="the item status already finalized ")
+    
+    if item_status not in ALLOWED_ITEM_STATUS:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail=f" status not allowed. allowed values: {ALLOWED_ITEM_STATUS} ")
+    if item_status=="recovery":
+        item.status=StatusCheck.recovered
+    if item_status=="returned":    
+        item.status=StatusCheck.returned
+    
+    db.commit()
+    db.refresh(item)
+    
+    return {"message":f"status updated to {item_status}"}
 def delete_item(item_id:int,current_user,db:Session):
     item=db.query(Items).filter(Items.id==item_id).first()
     if not item:

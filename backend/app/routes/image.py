@@ -13,14 +13,14 @@ async def upload_item(item_id:int,
                 db:Session=Depends(get_db),file:UploadFile=File(...)):
     return await image.upload_image(item_id,current_user,db,file)
 
-@router.get("/image")
-def upload_item(
+@router.get("{item_id}/image")
+def upload_item(item_id:int,
                 current_user:User=Depends(get_current_user),
                 db:Session=Depends(get_db)):
-    return image.item_image(current_user,db)
+    return image.item_image(item_id,db)
 
-@router.delete("/image")
-def upload_item(
+@router.delete("{item_image}/image")
+def upload_item(item_id:int,
                 current_user:User=Depends(get_current_user),
                 db:Session=Depends(get_db)):
-    return image.delete_image(current_user,db)
+    return image.delete_image(item_id,current_user,db)
